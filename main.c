@@ -47,8 +47,8 @@ int main(int argc, char *argv[]) {
     mC = calloc(n * n, sizeof(float));
 
     for (int i = 0; i < n * n; i++) {
-        mA[i] = (float)i;
-        mB[i] = (float)i;
+        mA[i] = (float)rand() / RAND_MAX;
+        mB[i] = (float)rand() / RAND_MAX;
         mC[i] = .0f;
     }
 
