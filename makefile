@@ -9,13 +9,13 @@ make:
 	done
 
 	@i=1; while [[ $$i -le 10 ]]; do \
-		time ./a.out 6 2000; \
+		time ./a.out 6 1500; \
 		echo; \
 		((i = i + 1)); \
 	done
 
 	@i=1; while [[ $$i -le 10 ]]; do \
-		time ./a.out 6 3000; \
+		time ./a.out 6 2250; \
 		echo; \
 		((i = i + 1)); \
 	done
