@@ -63,14 +63,5 @@ int main(int argc, char *argv[]) {
         pthread_join(tid[i], NULL);
     }
 
-    // print matriz C
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            printf("%f ", mC[n * i + j]);
-        }
-
-        printf("\n");
-    }
-
     return 0;
 }
