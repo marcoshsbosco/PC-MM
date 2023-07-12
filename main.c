@@ -6,9 +6,9 @@
 int nfluxos;
 int n;
 
-int *mA;
-int *mB;
-int *mC;
+float *mA;
+float *mB;
+float *mC;
 
 
 void *worker(void *arg) {
@@ -42,14 +42,14 @@ int main(int argc, char *argv[]) {
     // alocação de memória
     tid = calloc(nfluxos, sizeof(pthread_t));
     tnum = calloc(nfluxos, sizeof(int));
-    mA = calloc(n * n, sizeof(int));
-    mB = calloc(n * n, sizeof(int));
-    mC = calloc(n * n, sizeof(int));
+    mA = calloc(n * n, sizeof(float));
+    mB = calloc(n * n, sizeof(float));
+    mC = calloc(n * n, sizeof(float));
 
     for (int i = 0; i < n * n; i++) {
-        mA[i] = i;
-        mB[i] = i;
-        mC[i] = 0;
+        mA[i] = (float)rand() / RAND_MAX;
+        mB[i] = (float)rand() / RAND_MAX;
+        mC[i] = .0f;
     }
 
     // criação de fluxos e de seus atributos (ID e número)
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     // print matriz C
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            printf("%d ", mC[n * i + j]);
+            printf("%f ", mC[n * i + j]);
         }
 
         printf("\n");
