@@ -3,10 +3,10 @@
 #include <pthread.h>
 
 
-struct ThreadArgs {
-    int nfluxos;
-    int nmatriz;
-    int tnum;
+struct ArgsFluxo {  // encapsula argumentos para cada fluxo
+    int fluxos;
+    int tamMatriz;
+    int fluxoAtual;
 };
 
 float *mA;
@@ -14,13 +14,13 @@ float *mB;
 float *mC;
 
 
-void *worker(void *arg) {
-    struct ThreadArgs args = *(struct ThreadArgs *)arg;
+void *mm(void *arg) {
+    struct ArgsFluxo args = *(struct ArgsFluxo *)arg;
 
-    for (int i = args.tnum * args.nmatriz / args.nfluxos; i < (args.nmatriz + args.nmatriz * args.tnum) / args.nfluxos; i++) {
-        for (int j = 0; j < args.nmatriz; j++) {
-            for (int k = 0; k < args.nmatriz; k++) {
-                mC[args.nmatriz * i + j] += mA[args.nmatriz * i + k] * mB[args.nmatriz * k + j];
+    for (int i = args.fluxoAtual * args.tamMatriz / args.fluxos; i < (args.tamMatriz + args.tamMatriz * args.fluxoAtual) / args.fluxos; i++) {
+        for (int j = 0; j < args.tamMatriz; j++) {
+            for (int k = 0; k < args.tamMatriz; k++) {
+                mC[args.tamMatriz * i + j] += mA[args.tamMatriz * i + k] * mB[args.tamMatriz * k + j];
             }
         }
     }
@@ -30,44 +30,46 @@ void *worker(void *arg) {
 
 
 int main(int argc, char *argv[]) {
-    pthread_t *tid;
-    struct ThreadArgs *args;
-    int nmatriz, nfluxos;
+    pthread_t *idsFluxo;
+    struct ArgsFluxo *args;
+    int tamMatriz, fluxos;
 
+    // tratamento de argumentos por linha de comando
     if (argc != 3) {
-        printf("--Uso CLI--\n./a.out nfluxos nmatriz\n");
+        printf("--Uso CLI--\n./a.out fluxos tamMatriz\n");
 
         return 1;
     } else {
-        nfluxos = strtol(argv[1], NULL, 10);
-        nmatriz = strtol(argv[2], NULL, 10);
+        fluxos = strtol(argv[1], NULL, 10);
+        tamMatriz = strtol(argv[2], NULL, 10);
     }
 
     // alocação de memória
-    tid = calloc(nfluxos, sizeof(pthread_t));
-    args = calloc(nfluxos, sizeof(struct ThreadArgs));
-    mA = calloc(nmatriz * nmatriz, sizeof(float));
-    mB = calloc(nmatriz * nmatriz, sizeof(float));
-    mC = calloc(nmatriz * nmatriz, sizeof(float));
+    idsFluxo = calloc(fluxos, sizeof(pthread_t));
+    args = calloc(fluxos, sizeof(struct ArgsFluxo));
+    mA = calloc(tamMatriz * tamMatriz, sizeof(float));
+    mB = calloc(tamMatriz * tamMatriz, sizeof(float));
+    mC = calloc(tamMatriz * tamMatriz, sizeof(float));
 
-    for (int i = 0; i < nmatriz * nmatriz; i++) {
+    // preenchimento das matrizes A e B com números aleatórios, C com zeros
+    for (int i = 0; i < tamMatriz * tamMatriz; i++) {
         mA[i] = (float)rand() / RAND_MAX;
         mB[i] = (float)rand() / RAND_MAX;
         mC[i] = .0f;
     }
 
     // criação de fluxos e de seus atributos (ID e número)
-    for (int i = 0; i < nfluxos; i++) {
-        args[i].tnum = i;
-        args[i].nmatriz = nmatriz;
-        args[i].nfluxos = nfluxos;
+    for (int i = 0; i < fluxos; i++) {
+        args[i].fluxoAtual = i;
+        args[i].tamMatriz = tamMatriz;
+        args[i].fluxos = fluxos;
 
-        pthread_create(&tid[i], NULL, &worker, &args[i]);
+        pthread_create(&idsFluxo[i], NULL, &mm, &args[i]);
     }
 
     // join
-    for (int i = 0; i < nfluxos; i++) {
-        pthread_join(tid[i], NULL);
+    for (int i = 0; i < fluxos; i++) {
+        pthread_join(idsFluxo[i], NULL);
     }
 
     return 0;
