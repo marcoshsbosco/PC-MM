@@ -35,7 +35,7 @@ make:
 		\
 		echo >> tempos.dat; \
 		echo Sequencial >> tempos.dat; \
-		{ time ./sequencial.out 1000 ; } 2>> tempos.dat; \
+		{ time ./sequencial.out 1500 ; } 2>> tempos.dat; \
 		\
 		j=1; while [[ $$j -le 8 ]]; do \
 			echo >> tempos.dat; \
@@ -56,7 +56,7 @@ make:
 		\
 		echo >> tempos.dat; \
 		echo Sequencial >> tempos.dat; \
-		{ time ./sequencial.out 1000 ; } 2>> tempos.dat; \
+		{ time ./sequencial.out 2250 ; } 2>> tempos.dat; \
 		\
 		j=1; while [[ $$j -le 8 ]]; do \
 			echo >> tempos.dat; \
