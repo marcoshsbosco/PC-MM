@@ -29,7 +29,7 @@ make:
 	echo >> tempos.dat; \
 	echo --- Matriz 1500x1500 --- >> tempos.dat
 
-	i=1; while [[ $$i -le 10 ]]; do \
+	for i in $$(seq 1 10); do \
 		echo >> tempos.dat; \
 		echo Iteração $$i >> tempos.dat; \
 		\
@@ -37,7 +37,7 @@ make:
 		echo Sequencial >> tempos.dat; \
 		{ time ./sequencial.out 1500 ; } 2>> tempos.dat; \
 		\
-		j=1; while [[ $$j -le 8 ]]; do \
+		for j in $$(seq 1 8); do \
 			echo >> tempos.dat; \
 			echo Fluxos: $$j >> tempos.dat; \
 			{ time ./paralelo.out $$j 1500 ; } 2>> tempos.dat; \
@@ -50,7 +50,7 @@ make:
 	echo >> tempos.dat; \
 	echo --- Matriz 2250x2250 --- >> tempos.dat
 
-	i=1; while [[ $$i -le 10 ]]; do \
+	for i in $$(seq 1 10); do \
 		echo >> tempos.dat; \
 		echo Iteração $$i >> tempos.dat; \
 		\
@@ -58,7 +58,7 @@ make:
 		echo Sequencial >> tempos.dat; \
 		{ time ./sequencial.out 2250 ; } 2>> tempos.dat; \
 		\
-		j=1; while [[ $$j -le 8 ]]; do \
+		for j in $$(seq 1 8); do \
 			echo >> tempos.dat; \
 			echo Fluxos: $$j >> tempos.dat; \
 			{ time ./paralelo.out $$j 2250 ; } 2>> tempos.dat; \
