@@ -8,7 +8,7 @@ make:
 
 	echo --- Matriz 1000x1000 --- >> tempos.dat
 
-	i=1; while [[ $$i -le 10 ]]; do \
+	for i in $$(seq 1 10); do \
 		echo >> tempos.dat; \
 		echo Iteração $$i >> tempos.dat; \
 		\
@@ -16,7 +16,7 @@ make:
 		echo Sequencial >> tempos.dat; \
 		{ time ./sequencial.out 1000 ; } 2>> tempos.dat; \
 		\
-		j=1; while [[ $$j -le 8 ]]; do \
+		for j in $$(seq 1 8); do \
 			echo >> tempos.dat; \
 			echo Fluxos: $$j >> tempos.dat; \
 			{ time ./paralelo.out $$j 1000 ; } 2>> tempos.dat; \
